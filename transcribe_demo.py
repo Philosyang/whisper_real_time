@@ -51,6 +51,8 @@ def main():
 
     recorder.listen_in_background(source, record_callback, phrase_time_limit=record_timeout)
 
+    print(torch.cuda.memory_allocated())
+    print(torch.cuda.get_device_properties(0).total_memory)
     print("Model loaded. Begin now:\n")
 
     while True:
@@ -81,18 +83,22 @@ def main():
                 else:
                     transcription[-1] = text
 
-                os.system('cls' if os.name=='nt' else 'clear')
                 for line in transcription:
+                    if not len(line):
+                        continue
                     print(line)
+                    with open('out', 'a', encoding='utf-8') as f:
+                        f.write(line + '\n')
+
                 print('', end='', flush=True)
 
                 sleep(0.25)
         except KeyboardInterrupt:
             break
 
-    print("\n\nTranscription:")
-    for line in transcription:
-        print(line)
+    # print("\n\nTranscription:")
+    # for line in transcription:
+    #     print(line)
 
 
 if __name__ == "__main__":
