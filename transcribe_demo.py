@@ -26,7 +26,7 @@ def main():
     last_sample = bytes()
     data_queue = Queue()
     recorder = sr.Recognizer()
-    recorder.energy_threshold = args.energy_threshold
+    recorder.energy_threshold = 1000
     recorder.dynamic_energy_threshold = False
     
     source = sr.Microphone(sample_rate=16000)
